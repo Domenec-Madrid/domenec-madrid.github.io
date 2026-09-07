@@ -70,7 +70,7 @@ The chain layer doesn't decide what counts as tainted, or as final. It takes two
 - `does_taint(&tx)`: should this transaction be considered tainted?
 - `is_settled(&pos)`: do we consider this chain position final?
 
-Both of them replace something that was there before. `balance` used to take a `trust_predicate` and a `min_confirmations` number. Swapping the first for `does_taint` is what let me do the ancestry logic at all: the old one looked at keychains, the new one looks at inputs. The second change is a fixed confirmation count, it is only one way of deciding that a coin has settled, so rather than hardcode the number I let the caller answer the question.  
+Both of them replace something that was there before. `balance` used to take a `trust_predicate` and a `min_confirmations` number. The old predicate only saw an output's keychain and index, so it could tell you where a coin landed but never where it came from. `does_taint` takes the whole transaction instead, which is what makes it possible to look at the inputs. `min_confirmations` used to be a fixed number too.
 
 While I was in there I also took a generic out. `balance` used to work over `(identifier, outpoint)` pairs, which dragged a type parameter through the signature without buying much, and it now takes plain `OutPoint`s. Together with the memoization, which guarantees `does_taint` runs at most once per transaction no matter how many of your coins trace back through it, the function ended up both simpler to call and cheaper to run than the one I set out to patch.
 

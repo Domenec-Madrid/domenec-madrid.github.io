@@ -9,6 +9,11 @@
 $red-color: #ff3636 !default;
 $red-color-dark: #b71c1c !default;
 $orange-color: #f29105 !default;
+// Same hue as $orange-color, darkened for light-mode text: the bright orange
+// sits at 2.38:1 against a white page, well under WCAG AA (4.5:1). Only used
+// where the theme color is rendered as text/background on the light theme;
+// dark mode keeps $orange-color, which already clears AA there (7.16:1).
+$orange-color-light-text: #aa6604 !default;
 $blue-color: #0076df !default;
 $blue-color-dark: #00369f !default;
 $cyan-color: #2698ba !default;
